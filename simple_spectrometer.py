@@ -197,10 +197,17 @@ def get_spectrometer_info(usb_device, spec_commands_to, spec_data_from):
     print("L2 Lens Installed: ", l2_lens_installed)
     print("CPLD Version: ", cpld_version)
 
-def get_background_noise(): 
-    # Note: This method must be used before pointing your spectrometer to the light source
-    #       and is destined to be used for spectrum analysis.
-    print("Measuring background noise... \n")
+
+##################################################################################
+##################################################################################
+
+
+def get_snapshot(integration_time, name='data', start=1, end=2048):
+    while start < 1 or end > 2048:
+            print("Invalid wavelength range, please enter starting and ending wavelengths between 1 and 2048 nm ")
+            start = int(input("Start: "))
+            end = int(input("End: "))
+            print('\n')
     sp = find_spectrometer()
     if sp.usb_device is None:
         print('No Ocean Optics Devices Found')
@@ -209,40 +216,41 @@ def get_background_noise():
     else:
         spectrometer_init(sp.usb_device, sp.cmd_ep_out)
         # get_spectrometer_info(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
-        set_integration_time(sp.usb_device, 4500, sp.cmd_ep_out)           # integration time in micro-seconds
+        set_integration_time(sp.usb_device, integration_time, sp.cmd_ep_out)           # integration time in micro-seconds
         # get_integration_time(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
-
-
-        # Asking for start and end wavelengths for analysis
-        print("Please enter a starting and ending wavelength [nm] \n")
-        start = int(input("Start: "))
-        end = int(input("End: "))
-        print('\n')
-        while start < 1 or end > 2048:
-            print("Invalid wavelengths, please enter starting and ending wavelengths between 1 and 2048 nm ")
-            start = int(input("Start: "))
-            end = int(input("End: "))
-            print('\n')
-        
-        
-            
+                    
         try: 
             acquired = request_spectrum(sp.usb_device, sp.packet_size, sp.spectra_ep_in, sp.cmd_ep_out)
         except usb.core.USBTimeoutError:
             # print("Reconnecting")
             acquired = request_spectrum(sp.usb_device, sp.packet_size, sp.spectra_ep_in, sp.cmd_ep_out)
-        #print(len(acquired))
+
         filtered_data = acquired[start:end]
-    
-        now = datetime.now()
-        dt_string = now.strftime("%d:%m:%Y_%H-%M-%S")     
-        name = 'background_noise_' + dt_string
         save_spectrum_data(name, filtered_data, start)
 
-        print("\n Exiting and cleaning up USB comms ...")
+       # Exiting and cleaning up USB comms
         drop_spectrometer(sp.usb_device) 
-      
-def acquire():
+
+def get_spectrum(integration_time, name='data'):
+    # Asking for start and end wavelengths for analysis
+    print("Please enter a wavelength range [nm] \n")
+    start = int(input("Start: "))
+    end = int(input("End: "))
+    print('\n')
+    get_snapshot(integration_time, name, start, end)
+
+def get_background_noise(integration_time=4500): 
+    # Note: This method must be used before pointing your spectrometer to the light source
+    #       and is destined to be used for spectrum analysis.
+    print("Measuring background noise... \n")
+    get_spectrum(integration_time, name='background_noise_')
+
+     
+##################################################################################     
+##################################################################################
+
+
+def acquire(show= True, verbose= False, integration_time=4500):
     sp = find_spectrometer()
 
     if sp.usb_device is None:
@@ -251,13 +259,14 @@ def acquire():
         print('No Known Ocean Optics Spectrometer Found')
     else:
         spectrometer_init(sp.usb_device, sp.cmd_ep_out)
-        get_spectrometer_info(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
-        set_integration_time(sp.usb_device, 4500, sp.cmd_ep_out)           # integration time in micro-seconds
-        get_integration_time(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
+        if verbose : get_spectrometer_info(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
+        set_integration_time(sp.usb_device, integration_time, sp.cmd_ep_out)           # integration time in micro-seconds
+        if verbose : get_integration_time(sp.usb_device, sp.cmd_ep_out, sp.data_ep_in)
 
-        # plot the acquired spectrum
-        plt.ion()
-        plt.figure(figsize=(12,8))
+        # Ploting the acquired spectrum
+        if show:
+            plt.ion()
+            plt.figure(figsize=(12,8))
 
         # Asking for start and end wavelengths for analysis
         print("Please enter a starting and ending wavelength [nm] \n")
@@ -279,13 +288,14 @@ def acquire():
                     acquired = request_spectrum(sp.usb_device, sp.packet_size, sp.spectra_ep_in, sp.cmd_ep_out)
                 #print(len(acquired))
                 filtered_data = acquired[start:end]
-                plt.title(sp.model_name)
-                plt.plot(range(start, end), filtered_data, color='b')
-                plt.xlabel(r"$\lambda \rm \ [nm]$")
-                plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-                plt.grid(True)
-                plt.pause(0.05)
-                plt.cla()
+                if show:
+                    plt.title(sp.model_name)
+                    plt.plot(range(start, end), filtered_data, color='b')
+                    plt.xlabel(r"$\lambda \rm \ [nm]$")
+                    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+                    plt.grid(True)
+                    plt.pause(0.05)
+                    plt.cla()
         except KeyboardInterrupt:
             # Exit on CTRL-C
             now = datetime.now()
@@ -293,12 +303,16 @@ def acquire():
             name = sp.model_name + '_' + dt_string
 
             save_spectrum_data(name, filtered_data, start)
-            plt.savefig(name + "_spectrum" + '.eps')
+            if show: 
+                plt.savefig(name + "_spectrum" + '.eps')
             pass
         print("\n Exiting and cleaning up USB comms ...")
         drop_spectrometer(sp.usb_device)
 
 
+##################################################################################
+##################################################################################
+
 if __name__ == '__main__':
 
-    acquire()
+    acquire(verbose=True)
