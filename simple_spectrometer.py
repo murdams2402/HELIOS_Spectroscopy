@@ -304,7 +304,8 @@ def acquire(show= True, verbose= False, integration_time=4500):
 
             save_spectrum_data(name, filtered_data, start)
             if show: 
-                plt.savefig(name + "_spectrum" + '.eps')
+                plt.savefig(name + "_spectrum" + '.png')
+                # plt.savefig(name + "_spectrum" + '.eps')
             pass
         print("\n Exiting and cleaning up USB comms ...")
         drop_spectrometer(sp.usb_device)
