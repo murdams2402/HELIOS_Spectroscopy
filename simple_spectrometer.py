@@ -236,11 +236,11 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             # Exit on CTRL-C
             now = datetime.now()
-            dt_string = now.strftime("%d_%m_%Y-%H:%M:%S")     
+            dt_string = now.strftime("%d:%m:%Y_%H-%M-%S")     
             name = sp.model_name + '_' + dt_string
 
-            print_spectrum_data('Spectrum_data\Spectrometer=' + name, filtered_data, start)
-            plt.savefig('Spectrum_figures\Spectrometer=' + name + "_spectrum" + '.eps')
+            print_spectrum_data(name, filtered_data, start)
+            plt.savefig(name + "_spectrum" + '.eps')
             pass
         print("Exiting and cleaning up USB comms ...")
         drop_spectrometer(sp.usb_device)
