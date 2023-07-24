@@ -1,5 +1,5 @@
 
-def print_spectrum_data(model_name, data, start):
+def save_spectrum_data(model_name, data, start):
     file_name = model_name + "_spectrum_raw_data.txt"
     with open(file_name, 'w') as file:
         file.write(model_name + " " + "spectrum")
