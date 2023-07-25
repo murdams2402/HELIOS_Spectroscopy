@@ -1,6 +1,3 @@
 # HELIOS_Spectroscopy
 
-
-![](../main/Spectrum_figures/Argon_spectrum.eps?raw=true)
-
-![](../main/Spectrum_figures/Neon_spectrum.eps?raw=true)
+This code is destined to the automatation of the HELIOS experiment, of the Swiss Plasma Center (SPC). From the open-source code ..., this code allows an easy visualisation of the cold plasma's spectra produced by the apparatus.
