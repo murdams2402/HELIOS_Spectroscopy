@@ -1,6 +1,6 @@
 import usb.core
 import usb.util
-from print_data import save_spectrum_data
+from save_data import save_spectrum_data
 import plot_config
 
 from datetime import datetime
@@ -226,7 +226,7 @@ def get_snapshot(integration_time, name='data', start=1, end=2048):
             acquired = request_spectrum(sp.usb_device, sp.packet_size, sp.spectra_ep_in, sp.cmd_ep_out)
 
         filtered_data = acquired[start:end]
-        save_spectrum_data(name, filtered_data, start)
+        save_spectrum_data(name, filtered_data, start, save_path='Spectrum_data/')
 
        # Exiting and cleaning up USB comms
         drop_spectrometer(sp.usb_device) 
@@ -305,9 +305,9 @@ def acquire(show= True, verbose= False, integration_time=4500):
             dt_string = now.strftime("%d:%m:%Y_%H-%M-%S")     
             name = sp.model_name + '_' + dt_string
 
-            save_spectrum_data(name, filtered_data, start)
+            save_spectrum_data(name, filtered_data, start, save_path='Spectrum_data/')
             if show: 
-                plt.savefig(name + "_spectrum" + '.png')
+                plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
                 # plt.savefig(name + "_spectrum" + '.eps')
             pass
         print("\n Exiting and cleaning up USB comms ...")

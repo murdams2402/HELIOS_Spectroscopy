@@ -16,10 +16,11 @@ from datetime import datetime
 from simple_spectrometer import get_background_noise, get_snapshot
 
 integration_time = 4000
+path = 'Spectrum_data/'
 
 print("Acquiring background noise ... \n ")
 start, end = get_background_noise(integration_time)
-background = pd.read_table("background_noise_spectrum_raw_data.txt", sep=" ", names=["wavelegnth", "intensiy"], skiprows=2)
+background = pd.read_table(path + 'background_noise_spectrum_raw_data.txt', sep=" ", names=["wavelegnth", "intensiy"], skiprows=2)
 
 # print("Specify valid wavelength range [1 - 2048 nm]: \n")
 # start = int(input("Start: "))
@@ -48,7 +49,7 @@ while pressure > 1e-8:
                  end=end)
     
     # Importing data 
-    brut = pd.read_table(f"doppler_broadening_data_pressure={pressure}mbar_time=" + dt_string + "_spectrum_raw_data.txt", 
+    brut = pd.read_table(path + f"doppler_broadening_data_pressure={pressure}mbar_time=" + dt_string + "_spectrum_raw_data.txt", 
                          sep=" ", 
                          names=["wavelength", "intensiy"], 
                          skiprows=2)
