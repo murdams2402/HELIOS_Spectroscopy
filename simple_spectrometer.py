@@ -238,12 +238,15 @@ def get_spectrum(integration_time, name='data'):
     end = int(input("End: "))
     print('\n')
     get_snapshot(integration_time, name, start, end)
+    return start, end
 
 def get_background_noise(integration_time=4500): 
     # Note: This method must be used before pointing your spectrometer to the light source
     #       and is destined to be used for spectrum analysis.
-    print("Measuring background noise... \n")
-    get_spectrum(integration_time, name='background_noise_')
+    print("Measuring background noise...\n")
+    strart, end = get_spectrum(integration_time, name='background_noise')
+    print("Background noise acquired !\n")
+    return strart, end
 
      
 ##################################################################################     
