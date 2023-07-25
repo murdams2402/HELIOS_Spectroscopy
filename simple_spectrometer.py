@@ -320,5 +320,4 @@ def acquire(show= True, verbose= False, integration_time=4500):
 ##################################################################################
 
 if __name__ == '__main__':
-
     acquire(verbose=True)
