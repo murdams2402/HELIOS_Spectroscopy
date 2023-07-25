@@ -270,6 +270,8 @@ def acquire(show= True, verbose= False, integration_time=4500):
         if show:
             plt.ion()
             plt.figure(figsize=(12,8))
+            manager = plt.get_current_fig_manager()
+            manager.full_screen_toggle()        
 
         # Asking for start and end wavelengths for analysis
         print("Please enter a starting and ending wavelength [nm] \n")
