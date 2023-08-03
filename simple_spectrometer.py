@@ -20,7 +20,7 @@ def find_spectrometer():
                                    cmd_ep_out=0, data_ep_in=0, data_ep_in_size=0, spectra_ep_in=0, spectra_ep_in_size=0)
 
     # find any vendor devices
-    # usb_devices = usb.core.find(find_all=True, idProduct=0x101e, idVendor=config.vendor_ids['OCEANOPTICS_VENDOR'])
+    # usb_devices = usb.core.find(find_all=True, idProduct=0x8613, idVendor=config.vendor_ids['OCEANOPTICS_VENDOR'])
     usb_devices = usb.core.find(find_all=True, idVendor=config.vendor_ids['OCEANOPTICS_VENDOR'])
     # was it found?
     if usb_devices is None:
@@ -274,15 +274,15 @@ def acquire(show= True, verbose= False, integration_time=4500):
             manager.full_screen_toggle()        
 
         # Asking for start and end wavelengths for analysis
-        print("Please enter a starting and ending wavelength [nm] \n")
-        start = int(input("Start: "))
-        end = int(input("End: "))
-        print('\n')
-        while start < 1 or end > 2048:
-            print("Invalid wavelengths, please enter starting and ending wavelengths between 1 and 2048 nm ")
-            start = int(input("Start: "))
-            end = int(input("End: "))
-            print('\n')
+        # print("Please enter a starting and ending wavelength [nm] \n")
+        # start = int(input("Start: "))
+        # end = int(input("End: "))
+        # print('\n')
+        # while start < 1 or end > 2048:
+        #     print("Invalid wavelengths, please enter starting and ending wavelengths between 1 and 2048 nm ")
+        #     start = int(input("Start: "))
+        #     end = int(input("End: "))
+        #     print('\n')
         
         try:
             while True:
@@ -292,10 +292,10 @@ def acquire(show= True, verbose= False, integration_time=4500):
                     # print("Reconnecting")
                     acquired = request_spectrum(sp.usb_device, sp.packet_size, sp.spectra_ep_in, sp.cmd_ep_out)
                 #print(len(acquired))
-                filtered_data = acquired[start:end]
+                filtered_data = acquired # [start:end]
                 if show:
                     plt.title(sp.model_name)
-                    plt.plot(range(start, end), filtered_data, color='b')
+                    plt.plot(filtered_data, color='b')
                     plt.xlabel(r"$\lambda \rm \ [nm]$")
                     plt.ylabel(r"$\rm Intensity \ [a.u.]$")
                     plt.grid(True)
@@ -307,7 +307,7 @@ def acquire(show= True, verbose= False, integration_time=4500):
             dt_string = now.strftime("%d:%m:%Y_%H-%M-%S")     
             name = sp.model_name + '_' + dt_string
 
-            save_spectrum_data(name, filtered_data, start, save_path='Spectrum_data/')
+            # save_spectrum_data(name, filtered_data, start, save_path='Spectrum_data/')
             if show: 
                 plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
                 # plt.savefig(name + "_spectrum" + '.eps')
