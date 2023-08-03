@@ -1,4 +1,5 @@
 from plot_data import plot_data
+from save_data import save_spectrum_data
 import seabreeze
 seabreeze.use('cseabreeze')
 from seabreeze.spectrometers import list_devices, Spectrometer
@@ -31,7 +32,7 @@ try:
             plt.xlabel(r"$\lambda \rm \ [nm]$")
             plt.ylabel(r"$\rm Intensity \ [a.u.]$")
             plt.grid(True)
-            plt.pause(0.5)
+            plt.pause(1)
             plt.cla()
 except KeyboardInterrupt:
  # Exit on CTRL-C
@@ -45,3 +46,4 @@ except KeyboardInterrupt:
         plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
         # plt.savefig(name + "_spectrum" + '.eps')
     pass
+    save_spectrum_data(name, intensities, wavelengths[0], save_path='Spectrum_data/')
