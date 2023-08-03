@@ -14,7 +14,7 @@ from datetime import datetime
 # import seabreeze.spectrometers as sb
 # from seabreeze.spectrometers import Spectrometer
 # spec = Spectrometer.from_first_available()
-spec
+print(spec.model)
 spec.integration_time_micros(20000)
 
 show = True
