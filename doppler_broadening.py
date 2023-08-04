@@ -15,7 +15,7 @@ import plot_config
 from datetime import datetime
 from simple_spectrometer import get_background_noise, get_snapshot
 
-integration_time = 4000
+integration_time = 2000
 path = 'Spectrum_data/'
 
 print("Acquiring background noise ... \n ")
