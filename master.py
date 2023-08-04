@@ -28,8 +28,8 @@ def get_snapshot(int_time=20000, path='Spectrum_data/', name=''):
     # Acquireing data
     wavelengths, intensities = spec.spectrum()
     # Saving the data in the folder
-    dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
-    name += spec.model + '_' + dt_string
+    dt_string = '' #now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
+    name += spec.model # + '_' + dt_string
     # Closing connection with spectrometer
     spec.close()
     # Saving data and returning the file's full name

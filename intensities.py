@@ -3,13 +3,13 @@ import pandas as pd
 
 from scipy.signal import find_peaks
 
-print("Acquiring background noise, please turn the plasma off ... \n ")
-W, I = get_snapshot_raw()
-background = pd.DataFrame([(w, i) for w, i in zip(W, I)],
-                          columns=["wavelength", "intensiy"])
-print("Done!\n")
+#print("Acquiring background noise, please turn the plasma off ... \n ")
+#W, I = get_snapshot_raw()
+#background = pd.DataFrame([(w, i) for w, i in zip(W, I)],
+#                          columns=["wavelength", "intensiy"])
+#print("Done!\n")
 
-data = pd.DataFrame(columns=["shot", "file_name" "depth", "wavelength", "intensiy", "peaks"])
+data = pd.DataFrame(columns=["shot", "file_name" "depth", "wavelength", "intensity"])
 
 while True:
     shot = int(input("Enter shot number of measurment = "))
@@ -19,16 +19,16 @@ while True:
     # Importing data 
     brut = pd.read_table(fullname, 
                          sep=" ", 
-                         names=["wavelength", "intensiy"], 
+                         names=["wavelength", "intensity"], 
                          skiprows=2)
-    raw = [(shot, fullname, w, I) for w, I in zip(brut['wavelength'], brut["intensiy"])]
-    data_ = pd.DataFrame(raw, columns=["shot", "file_name" "depth", "wavelength", "intensiy"])
+    raw = [(shot, fullname, w, I) for w, I in zip(brut['wavelength'], brut["intensity"])]
+    data_ = pd.DataFrame(raw, columns=["shot", "file_name" "depth", "wavelength", "intensity"])
     
-    peaks, _ = find_peaks(data_["intesity"])
-    data_["peaks"] = peaks
+    # peaks, _ = find_peaks(data_["intensity"])
+    #data_["peaks"] = peaks
 
     # Filtering data
-    data_["intensiy"] = data_["intensiy"] - background["intensiy"] # background["intensiy"][start-1:end+1]
+    data_["intensity"] = data_["intensity"] # - background["intensiy"] # background["intensiy"][start-1:end+1]
     data = pd.concat([data, data_])
 
 
