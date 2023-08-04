@@ -1,3 +1,6 @@
-from simple_spectrometer import acquire
+from master import acquire_live_data
 
-acquire(show=True, verbose=True, integration_time=4500)
+# from simple_spectrometer import acquire
+# acquire(show=True, verbose=True, integration_time=4500)
+
+acquire_live_data(show=True, save=True)

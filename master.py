@@ -14,8 +14,29 @@ def get_spectrometer():
     spec = Spectrometer.from_first_available()
     return spec
 
+def get_snapshot_raw(int_time=20000):
+    spec = get_spectrometer()
+    spec.integration_time_micros(int_time)
+    wavelengths, intensities = spec.spectrum()
+    spec.close()
+    return wavelengths, intensities
 
-def acquire_data(spec, int_time=20000, show=False, save=False, path='Spectrum_data/'):
+def get_snapshot(int_time=20000, path='Spectrum_data/', name=''):
+    # Opening the spectrometer
+    spec = get_spectrometer()
+    spec.integration_time_micros(int_time)
+    # Acquireing data
+    wavelengths, intensities = spec.spectrum()
+    # Saving the data in the folder
+    dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
+    name += spec.model + '_' + dt_string
+    # Closing connection with spectrometer
+    spec.close()
+    # Saving data and returning the file's full name
+    return save_spectrum_data(name, intensities, wavelengths, save_path=path)
+
+
+def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_data/'):
     spec = get_spectrometer()
     spec.integration_time_micros(int_time)
     
@@ -37,13 +58,15 @@ def acquire_data(spec, int_time=20000, show=False, save=False, path='Spectrum_da
             if save:
                 dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
                 name = spec.model + '_' + dt_string
-                save_spectrum_data(name, intensities, wavelengths[0], save_path=path)
+                _ = save_spectrum_data(name, intensities, wavelengths, save_path=path)
+                plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
 
     except KeyboardInterrupt:
+        # Closing connection with spectrometer
+        spec.close()
         pass
 
 
-    
 
 
 if __name__ == '__main__':
@@ -76,11 +99,11 @@ if __name__ == '__main__':
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
         # name = spec.model() + '_' + dt_string
-        name = "HR4000" + '_' + dt_string
+        name = spec.model + '_' + dt_string
 
         # save_spectrum_data(name, filtered_data, start, save_path='Spectrum_data/')
         if show: 
             plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
             # plt.savefig(name + "_spectrum" + '.eps')
         pass
-        save_spectrum_data(name, intensities, wavelengths[0], save_path='Spectrum_data/')
+        _ =  save_spectrum_data(name, intensities, wavelengths, save_path='Spectrum_data/')
