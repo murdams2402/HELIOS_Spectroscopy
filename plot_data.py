@@ -10,5 +10,3 @@ def plot_data(x, y, x_label, y_label, title="", show=True):
     plt.ylabel(rf"{y_label}")
     plt.grid(True)
     if show : plt.show()
-
-
