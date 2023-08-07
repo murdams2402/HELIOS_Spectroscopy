@@ -14,7 +14,7 @@ data = pd.DataFrame(columns=["shot", "file_name" "depth", "wavelength", "intensi
 while True:
     shot = int(input("Enter shot number of measurment = "))
     depth = int(input("Enter depth [mm] = "))
-    fullname = get_snapshot(name=f"{shot}")
+    fullname = get_snapshot(path='Spectrum_data/Intensity_experiment/',name=f"{shot}")
 
     # Importing data 
     brut = pd.read_table(fullname, 
