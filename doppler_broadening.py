@@ -73,38 +73,39 @@ if show :
     plt.show()
 
 # Analysing the data : fitting broadening with Gaussian / Lorenzian / Voigt function
-#                      and determining gas temperature
-# FWHM_Gauss = []
-# FWHM_Lorenzian = []
-# FWHM_Voigt = []
-# FWHM_Voigt_estimation = []
-# for p in data["pressure"]:
-#     starting_points = []    
-#     # The FWHM of a Lorenzian is two times it's parameter b = \gamma (see function definition in utils.py)
-#     popt_Lorenzian, covopt_Lorenzian = curve_fit(lorenzian, 
-#                                              data[data["pressure"] == p]["intensiy"], 
-#                                              p0=starting_points)
-#     FWHM_Lorenzian.append(2*popt_Lorenzian[1])
+#                     and determining gas temperature
 
-#     starting_points = []
-#     # The FWHM of a Gaussian is equal to FWHM = sigma*sqrt( 8*ln(2) )
-#     popt_Gauss, covopt_Gauss = curve_fit(gaussian, 
-#                                          data[data["pressure"] == p]["intensiy"], 
-#                                          p0=starting_points)
-#     sigma = 1/sqrt(2*popt_Gauss[2])
-#     Delta_lambda = sigma*sqrt(8*log(2))
-#     FWHM_Gauss.append(Delta_lambda)
+FWHM_Gauss = []
+FWHM_Lorenzian = []
+FWHM_Voigt = []
+FWHM_Voigt_estimation = []
+for p in data["pressure"]:
+    starting_points = []    
+    # The FWHM of a Lorenzian is two times it's parameter b = \gamma (see function definition in utils.py)
+    popt_Lorenzian, covopt_Lorenzian = curve_fit(lorenzian, 
+                                             data[data["pressure"] == p]["intensiy"], 
+                                             p0=starting_points)
+    FWHM_Lorenzian.append(2*popt_Lorenzian[1])
+
+    starting_points = []
+    # The FWHM of a Gaussian is equal to FWHM = sigma*sqrt( 8*ln(2) )
+    popt_Gauss, covopt_Gauss = curve_fit(gaussian, 
+                                         data[data["pressure"] == p]["intensiy"], 
+                                         p0=starting_points)
+    sigma = 1/sqrt(2*popt_Gauss[2])
+    Delta_lambda = sigma*sqrt(8*log(2))
+    FWHM_Gauss.append(Delta_lambda)
     
-#     starting_points = []
-#     # The FWHM of the Voigt profile function is determined numerically
-#     popt_Voigt, covopt_Voigt = curve_fit(Voigt, 
-#                                          data[data["pressure"] == p]["intensiy"], 
-#                                          p0=starting_points)
-#     FWHM_Voigt.append()
-#     # However there is an approximation, which we can use as 4th estimation for the temperature
-#     FWHM_Voigt_estimation.append(0.5346*2*popt_Lorenzian[1] + sqrt(0.2166*(4*popt_Lorenzian[1]*popt_Lorenzian[1]) + Delta_lambda*Delta_lambda))
+    starting_points = []
+    # The FWHM of the Voigt profile function is determined numerically
+    popt_Voigt, covopt_Voigt = curve_fit(Voigt, 
+                                         data[data["pressure"] == p]["intensiy"], 
+                                         p0=starting_points)
+    FWHM_Voigt.append()
+    # However there is an approximation, which we can use as 4th estimation for the temperature
+    FWHM_Voigt_estimation.append(0.5346*2*popt_Lorenzian[1] + sqrt(0.2166*(4*popt_Lorenzian[1]*popt_Lorenzian[1]) + Delta_lambda*Delta_lambda))
     
-#     # indices of peakes
-#     peaks = []
-#     # Using scipy's function that retreaves the FWHM of the specified peaks
-#     widths, _ = peak_widths(x=data[data["pressure"] == p]["intensiy"], peaks=peaks )
+    # indices of peakes
+    peaks = []
+    # Using scipy's function that retreaves the FWHM of the specified peaks
+    widths, _ = peak_widths(x=data[data["pressure"] == p]["intensiy"], peaks=peaks )

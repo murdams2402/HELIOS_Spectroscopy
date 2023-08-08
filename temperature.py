@@ -5,6 +5,8 @@ from utils import get_files_and_params
 from scipy.constants import c, k
 m_Ne = 3.3509e-26 # kg
 from numpy import log, sqrt
+from utils import Voigt, gaussian, lorenzian
+from scipy.optimize import curve_fit
 
 from scipy.signal import peak_widths, find_peaks
 
@@ -47,13 +49,16 @@ def acquire_spectra(gas="Neon_"):
         plt.grid(True)  
     plt.show()        
 
-temperature = pd.DataFrame(columns=[ "file_name", "pressure", "peak wavelength", "FWHM Doppler", "temperature"])
+
 delta_lambda = 0.26962647198209 # [nm]
 Delta_Lamda_Apparatus = 0.03 # [nm] for HR4000
+
 if __name__ == '__main__':
+    temperature = pd.DataFrame(columns=[ "file_name", "pressure", "peak wavelength", "FWHM Doppler", "temperature"])
     dir = "Spectrum_data/Temperature_experiment"
     files = get_files_and_params(dir, format="Neon_pressure={pressure}_HR4000_spectrum_raw_data.txt")
     plt.figure(figsize=(8,6))
+    raw = pd.DataFrame(columns=[ "file_name", "pressure", "wavelength", "intensity"])
     for file in files:
         file_name = file["name"]
         p = file["pressure"]
@@ -62,6 +67,10 @@ if __name__ == '__main__':
                             names=["wavelength", "intensity"], 
                             skiprows=2)
         
+        temp = [(file_name, p, w, I) for w, I in zip(data["wavelength"], data["intensity"])]
+        temp = pd.DataFrame(temp, columns=[ "file_name", "pressure", "wavelength", "intensity"])
+        raw = pd.concat([raw, temp])
+
         max_peaks = data.max()
         # print(max_peaks["intensity"])
 
@@ -72,31 +81,78 @@ if __name__ == '__main__':
 
         # Using scipy's function that retreaves the FWHM of the specified peaks
         peaks_ = find_peaks(x=data["intensity"], height=[1000, max_peaks["intensity"]])
-        widths = peak_widths(x=data["intensity"], peaks=peaks_[0])
+        widths = peak_widths(x=data["intensity"], peaks=peaks_[0], rel_height=0.5)
         wavelengths = data.filter(items=peaks_[0], axis=0)
-        # print(wavelengths)
+        # Computing the FWHM of each peak
         Delta_Lamda_doppler = [ sqrt((fwhm*delta_lambda)*(fwhm*delta_lambda) - Delta_Lamda_Apparatus*Delta_Lamda_Apparatus) for fwhm in widths[0]]
         Tg = [ ((delta/l0)**2)*(c*c*m_Ne)/(8*k*log(2)) for delta, l0 in zip(Delta_Lamda_doppler, wavelengths["wavelength"])]
-        # print(Tg)
         # Saving data for later analysis
         brut = [(file_name, p, peak, wdth, tg) for wdth, peak, tg in zip(Delta_Lamda_doppler, wavelengths["wavelength"], Tg)]
         temperature_ = pd.DataFrame(brut, columns=[ "file_name", "pressure", "peak wavelength", "FWHM Doppler", "temperature"])
         temperature = pd.concat([temperature, temperature_])
+    # plt.show()
+
+
+    # plt.figure(figsize=(8,6))
+    # for file in temperature["file_name"]:
+    #         plt.scatter(temperature[temperature["file_name"]== file]["pressure"], temperature[temperature["file_name"]== file]["temperature"])
+    #         plt.xlabel(r"$p \rm \ [mbar]$")
+    #         plt.ylabel(r"$\rm T \ [?]$")
+    #         plt.grid(True)
+    # plt.show()
+    show = False
+    if show :
+        plt.figure(figsize=(8,6))
+        for peak in temperature["peak wavelength"]:
+                plt.scatter(x=temperature[temperature["peak wavelength"]== peak]["pressure"], y=temperature[temperature["peak wavelength"]== peak]["temperature"])
+                plt.xlabel(r"$p \rm \ [mbar]$")
+                plt.ylabel(r"$\rm T \ [?]$")
+                plt.grid(True)
+        plt.show()
+
+    window = [[584.6, 587], [624, 628], [639, 645], [646, 652.6], [690, 697], [700, 708]]
+
+    for i in range(0, len(window)):
+        filtered_raw = raw[(raw["wavelength"] >= window[i][0]) & (raw["wavelength"] <= window[i][1]) ]
+        # print(filtered_raw)
+
+        FWHM_Gauss = []
+        FWHM_Lorenzian = []
+
+        print(filtered_raw["file_name"])
+
+        plt.figure(figsize=(8,6))
+        for file in files:
+            file_name = file["name"]
+            plt.plot(filtered_raw[filtered_raw["file_name"] == file_name]["wavelength"],filtered_raw[filtered_raw["file_name"] == file_name]["intensity"])
+            plt.xlabel(r"$\lambda \rm \ [nm]$")
+            plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+            plt.grid(True)
+
+            x0 = abs(window[i][1] + window[i][0])*0.5
+            max_peak = filtered_raw[filtered_raw["file_name"] == file_name]["intensity"].max()
+            
+            # The FWHM of a Gaussian is equal to FWHM = sigma*sqrt( 8*ln(2) )
+            starting_points = [max_peak, x0, 0.5]
+            popt_Gauss, covopt_Gauss = curve_fit(gaussian, 
+                                                filtered_raw[filtered_raw["file_name"] == file_name]["wavelength"],
+                                                filtered_raw[filtered_raw["file_name"] == file_name]["intensity"],
+                                                p0=starting_points)
+            sigma = 1/sqrt(2*popt_Gauss[2])
+            FWHM_Gauss.append(sigma*sqrt(8*log(2)))
+
+
+            # # The FWHM of a Lorenzian is two times it's parameter b = \gamma (see function definition in utils.py)
+            # starting_points = [x0, max_peak*0.5]
+            # popt_Lorenzian, covopt_Lorenzian = curve_fit(lorenzian, 
+            #                                         filtered_raw[filtered_raw["file_name"] == file_name]["wavelength"],
+            #                                     filtered_raw[filtered_raw["file_name"] == file_name]["intensity"],
+            #                                     p0=starting_points)
+            # FWHM_Lorenzian.append(2*popt_Lorenzian[1])
+            
+
+            # break
+
+        print(FWHM_Gauss)
+
     plt.show()
-
-
-# plt.figure(figsize=(8,6))
-# for file in temperature["file_name"]:
-#         plt.scatter(temperature[temperature["file_name"]== file]["pressure"], temperature[temperature["file_name"]== file]["temperature"])
-#         plt.xlabel(r"$p \rm \ [mbar]$")
-#         plt.ylabel(r"$\rm T \ [?]$")
-#         plt.grid(True)
-# plt.show()
-
-plt.figure(figsize=(8,6))
-for peak in temperature["peak wavelength"]:
-        plt.scatter(x=temperature[temperature["peak wavelength"]== peak]["pressure"], y=temperature[temperature["peak wavelength"]== peak]["temperature"])
-        plt.xlabel(r"$p \rm \ [mbar]$")
-        plt.ylabel(r"$\rm T \ [?]$")
-        plt.grid(True)
-plt.show()
