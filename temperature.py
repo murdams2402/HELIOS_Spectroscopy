@@ -51,7 +51,7 @@ def acquire_spectra(gas="Neon_"):
 
 
 delta_lambda = 0.26962647198209 # [nm]
-Delta_Lamda_Apparatus = 0.03 # [nm] for HR4000
+Delta_Lamda_Apparatus = 1 # [nm] Apparatus-linked broadening : FWHM for HR4000
 
 if __name__ == '__main__':
     temperature = pd.DataFrame(columns=[ "file_name", "pressure", "peak wavelength", "FWHM Doppler", "temperature"])
@@ -83,9 +83,11 @@ if __name__ == '__main__':
         peaks_ = find_peaks(x=data["intensity"], height=[1000, max_peaks["intensity"]])
         widths = peak_widths(x=data["intensity"], peaks=peaks_[0], rel_height=0.5)
         wavelengths = data.filter(items=peaks_[0], axis=0)
+        
         # Computing the FWHM of each peak
         Delta_Lamda_doppler = [ sqrt((fwhm*delta_lambda)*(fwhm*delta_lambda) - Delta_Lamda_Apparatus*Delta_Lamda_Apparatus) for fwhm in widths[0]]
-        Tg = [ ((delta/l0)**2)*(c*c*m_Ne)/(8*k*log(2)) for delta, l0 in zip(Delta_Lamda_doppler, wavelengths["wavelength"])]
+        Tg = [ ((delta/l0)*(delta/l0))*(c*c*m_Ne)/(8*k*log(2)) for delta, l0 in zip(Delta_Lamda_doppler, wavelengths["wavelength"])]
+        
         # Saving data for later analysis
         brut = [(file_name, p, peak, wdth, tg) for wdth, peak, tg in zip(Delta_Lamda_doppler, wavelengths["wavelength"], Tg)]
         temperature_ = pd.DataFrame(brut, columns=[ "file_name", "pressure", "peak wavelength", "FWHM Doppler", "temperature"])
@@ -110,20 +112,21 @@ if __name__ == '__main__':
                 plt.grid(True)
         plt.show()
 
-    window = [[584.6, 587], [624, 628], [639, 645], [646, 652.6], [690, 697], [700, 708]]
+    window = [[584.6, 587], [624, 628], [646, 652.6], [690, 697], [700, 708]] # [639, 645]
 
     for i in range(0, len(window)):
         filtered_raw = raw[(raw["wavelength"] >= window[i][0]) & (raw["wavelength"] <= window[i][1]) ]
         # print(filtered_raw)
 
-        FWHM_Gauss = []
+        FWHM_Gauss = pd.DataFrame(columns=["pressure", "FWHM", "temperature"])
         FWHM_Lorenzian = []
 
-        print(filtered_raw["file_name"])
+        # print(filtered_raw["file_name"])
 
         plt.figure(figsize=(8,6))
         for file in files:
             file_name = file["name"]
+
             plt.plot(filtered_raw[filtered_raw["file_name"] == file_name]["wavelength"],filtered_raw[filtered_raw["file_name"] == file_name]["intensity"])
             plt.xlabel(r"$\lambda \rm \ [nm]$")
             plt.ylabel(r"$\rm Intensity \ [a.u.]$")
@@ -139,7 +142,11 @@ if __name__ == '__main__':
                                                 filtered_raw[filtered_raw["file_name"] == file_name]["intensity"],
                                                 p0=starting_points)
             sigma = 1/sqrt(2*popt_Gauss[2])
-            FWHM_Gauss.append(sigma*sqrt(8*log(2)))
+            fwhm_gauss = sigma*sqrt(8*log(2))
+            doppler_fwhm = sqrt(fwhm_gauss*fwhm_gauss - Delta_Lamda_Apparatus*Delta_Lamda_Apparatus)
+            temp__ = pd.DataFrame([(file["pressure"], fwhm_gauss, ((doppler_fwhm/popt_Gauss[1])*(doppler_fwhm/popt_Gauss[1]))*(c*c*m_Ne)/(8*k*log(2)) )], columns=["pressure", "FWHM", "temperature"])
+            FWHM_Gauss = pd.concat([FWHM_Gauss, temp__])
+            
 
 
             # # The FWHM of a Lorenzian is two times it's parameter b = \gamma (see function definition in utils.py)
@@ -152,7 +159,15 @@ if __name__ == '__main__':
             
 
             # break
+        plt.show()
 
-        print(FWHM_Gauss)
 
-    plt.show()
+        plt.figure(figsize=(8,6))
+        # print(FWHM_Gauss)
+        plt.plot(FWHM_Gauss["pressure"],FWHM_Gauss["temperature"])
+        plt.xlabel(r"$ p \rm \ [nm]$")
+        plt.ylabel(r"$\rm T \ \rm [K]$")
+        plt.grid(True)
+        plt.show()
+
+    # plt.show()
