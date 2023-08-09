@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from utils import get_files_and_params
 from scipy.constants import c, k
 m_Ne = 3.3509e-26 # kg
-from numpy import log, sqrt
+from numpy import log, sqrt, absolute
 from utils import Voigt, gaussian, lorenzian
 from scipy.optimize import curve_fit
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     dir = "Spectrum_data/Temperature_experiment"
     files = get_files_and_params(dir, format="Neon_pressure={pressure}_HR4000_spectrum_raw_data.txt")
     plt.figure(figsize=(8,6))
-    raw = pd.DataFrame(columns=[ "file_name", "pressure", "wavelength", "intensity"])
+    raw = pd.DataFrame(columns=[ "file_name", "pressure", "wavelength", "frequency", "intensity"])
     for file in files:
         file_name = file["name"]
         p = file["pressure"]
@@ -67,17 +67,24 @@ if __name__ == '__main__':
                             names=["wavelength", "intensity"], 
                             skiprows=2)
         
-        temp = [(file_name, p, w, I) for w, I in zip(data["wavelength"], data["intensity"])]
-        temp = pd.DataFrame(temp, columns=[ "file_name", "pressure", "wavelength", "intensity"])
+        temp = [(file_name, p, w, c/(w*1e-9), I) for w, I in zip(data["wavelength"], data["intensity"])]
+        temp = pd.DataFrame(temp, columns=[ "file_name", "pressure", "wavelength", "frequency", "intensity"])
         raw = pd.concat([raw, temp])
 
         max_peaks = data.max()
         # print(max_peaks["intensity"])
 
+        data["frequency"] = c/(data["wavelength"]*1e-9)
+
         plt.plot(data["wavelength"],data["intensity"])
         plt.xlabel(r"$\lambda \rm \ [nm]$")
         plt.ylabel(r"$\rm Intensity \ [a.u.]$")
         plt.grid(True)
+
+        # plt.plot(data["frequency"],data["intensity"])
+        # plt.xlabel(r"$\nu \rm \ [Hz]$")
+        # plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+        # plt.grid(True)
 
         # Using scipy's function that retreaves the FWHM of the specified peaks
         peaks_ = find_peaks(x=data["intensity"], height=[1000, max_peaks["intensity"]])
@@ -85,7 +92,7 @@ if __name__ == '__main__':
         wavelengths = data.filter(items=peaks_[0], axis=0)
         
         # Computing the FWHM of each peak
-        Delta_Lamda_doppler = [ sqrt((fwhm*delta_lambda)*(fwhm*delta_lambda) - Delta_Lamda_Apparatus*Delta_Lamda_Apparatus) for fwhm in widths[0]]
+        Delta_Lamda_doppler = [ sqrt(absolute((fwhm*delta_lambda)*(fwhm*delta_lambda) - Delta_Lamda_Apparatus*Delta_Lamda_Apparatus)) for fwhm in widths[0]]
         Tg = [ ((delta/l0)*(delta/l0))*(c*c*m_Ne)/(8*k*log(2)) for delta, l0 in zip(Delta_Lamda_doppler, wavelengths["wavelength"])]
         
         # Saving data for later analysis
@@ -102,20 +109,23 @@ if __name__ == '__main__':
     #         plt.ylabel(r"$\rm T \ [?]$")
     #         plt.grid(True)
     # plt.show()
-    show = False
+
+    show = True
     if show :
         plt.figure(figsize=(8,6))
         for peak in temperature["peak wavelength"]:
                 plt.scatter(x=temperature[temperature["peak wavelength"]== peak]["pressure"], y=temperature[temperature["peak wavelength"]== peak]["temperature"])
                 plt.xlabel(r"$p \rm \ [mbar]$")
-                plt.ylabel(r"$\rm T \ [?]$")
+                plt.ylabel(r"$\rm T \ [K]$")
                 plt.grid(True)
         plt.show()
 
+    ##################################################################################################
+    # Trying an analysis "by hand"
     window = [[584.6, 587], [624, 628], [646, 652.6], [690, 697], [700, 708]] # [639, 645]
 
     for i in range(0, len(window)):
-        filtered_raw = raw[(raw["wavelength"] >= window[i][0]) & (raw["wavelength"] <= window[i][1]) ]
+        filtered_raw = raw[ (raw["wavelength"] >= window[i][0]) & (raw["wavelength"] <= window[i][1]) ]
         # print(filtered_raw)
 
         FWHM_Gauss = pd.DataFrame(columns=["pressure", "FWHM", "temperature"])
@@ -132,7 +142,7 @@ if __name__ == '__main__':
             plt.ylabel(r"$\rm Intensity \ [a.u.]$")
             plt.grid(True)
 
-            x0 = abs(window[i][1] + window[i][0])*0.5
+            x0 = absolute(window[i][1] + window[i][0])*0.5
             max_peak = filtered_raw[filtered_raw["file_name"] == file_name]["intensity"].max()
             
             # The FWHM of a Gaussian is equal to FWHM = sigma*sqrt( 8*ln(2) )
@@ -165,7 +175,7 @@ if __name__ == '__main__':
         plt.figure(figsize=(8,6))
         # print(FWHM_Gauss)
         plt.plot(FWHM_Gauss["pressure"],FWHM_Gauss["temperature"])
-        plt.xlabel(r"$ p \rm \ [nm]$")
+        plt.xlabel(r"$ p \rm \ [mbar]$")
         plt.ylabel(r"$\rm T \ \rm [K]$")
         plt.grid(True)
         plt.show()
