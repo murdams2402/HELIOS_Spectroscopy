@@ -2,20 +2,26 @@ import tkinter as tk
 from tkinter import *
 
 import subprocess
+import os
+import signal
 
 # Global variable to store the subprocess object
 running_process = None
 
 def launch_script():
     global running_process
-    script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
-    running_process = subprocess.Popen("/usr/local/bin/python3 " + script_path, shell=True)
+    script_path = "C:/Users/Administrator/Desktop/HELIOS_Spectroscopy/launch.py"
+    running_process = subprocess.Popen(["python", script_path], 
+                                     shell=True)
     # running_process.terminate()
 
 def stop_script():
    global running_process
    if running_process:
-        running_process.terminate()
+        if os.name == "nt": # Checking is running on Windows
+            running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+        else :
+            running_process.terminate()
         running_process = None
 
 
@@ -43,8 +49,8 @@ def stop_program():
     window.quit()
 
 # Set the window size
-window_width = 1150
-window_height = 450
+window_width = 1500
+window_height = 470
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 x_position = (screen_width - window_width) // 2
@@ -101,7 +107,7 @@ description_label.pack(pady=20)
 # Load the image
 image = PhotoImage(file="Images/background.PNG") 
 # Resize the image using subsample
-resized_image = image.subsample(5, 5)
+resized_image = image.subsample(4, 4)
 # Create a label to display the image
 image_label = tk.Label(window, image=resized_image)
 image_label.pack()

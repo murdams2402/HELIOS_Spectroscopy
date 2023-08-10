@@ -52,7 +52,7 @@ def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_dat
                 plt.xlabel(r"$\lambda \rm \ [nm]$")
                 plt.ylabel(r"$\rm Intensity \ [a.u.]$")
                 plt.grid(True)
-                plt.pause(1)
+                plt.pause(1.5)
                 plt.cla()
             
             if save:
@@ -65,6 +65,31 @@ def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_dat
         # Closing connection with spectrometer
         spec.close()
         pass
+
+def acquire_live_data_inf_loop(int_time=20000, show=False, save=False, path='Spectrum_data/'):
+    spec = get_spectrometer()
+    spec.integration_time_micros(int_time)
+    
+    if show:
+        plt.ion()
+        plt.figure(figsize=(9,7))
+
+
+    while True:
+        wavelengths, intensities = spec.spectrum()
+        if show:
+            plt.plot(wavelengths,intensities, color='b')
+            plt.xlabel(r"$\lambda \rm \ [nm]$")
+            plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+            plt.grid(True)
+            plt.pause(1.5)
+            plt.cla()
+        
+        if save:
+            dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
+            name = spec.model + '_' + dt_string
+            _ = save_spectrum_data(name, intensities, wavelengths, save_path=path)
+            plt.savefig('Spectrum_figures/' + name + 'spectrum.png')
 
 
 
