@@ -42,7 +42,7 @@ def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_dat
     
     if show:
         plt.ion()
-        plt.figure(figsize=(18,8))
+        plt.figure(figsize=(9,7))
 
     try :
         while True:

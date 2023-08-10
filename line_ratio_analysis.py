@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from utils import get_files_and_params
 from scipy.constants import c, k, h, e
 
@@ -37,8 +38,7 @@ if __name__ == '__main__':
     plt.figure()
     for file in files:
         shot = file["shot"]
-        if int(shot) > 25:
-            plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
+        plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
     plt.xlabel(r"$\lambda \rm \ [nm]$")
     plt.ylabel(r"$\rm Intensity \ [a.u.]$")
     plt.grid(True)
@@ -48,10 +48,22 @@ if __name__ == '__main__':
     plt.figure()
     for file in files:
         shot = file["shot"]
-        if int(shot) > 25:
-            plt.scatter(peaks[peaks["shot"]==shot]["wavelength"],peaks[peaks["shot"] == shot]["intensity"])
+        plt.scatter(peaks[peaks["shot"]==shot]["wavelength"],peaks[peaks["shot"] == shot]["intensity"])
     plt.xlabel(r"$\lambda \rm \ [nm]$")
     plt.ylabel(r"$\rm Intensity \ [a.u.]$")
     plt.grid(True)
     
+    # plt.show() 
+
+    mpl.rcParams.update({"font.size": 15})
+
+    peak_wavelengths = peaks["wavelength"].drop_duplicates() 
+    # print(peak_wavelengths)
+    sorted = peaks.sort_values("power")
+    plt.figure()
+    for l in peak_wavelengths:
+        plt.scatter(sorted[sorted["wavelength"] == l]["power"],sorted[sorted["wavelength"] == l]["intensity"])
+    plt.xlabel(r"$ \rm Power \ [W]$")
+    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+    plt.grid(True)
     plt.show() 
