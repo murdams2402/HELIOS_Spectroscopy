@@ -12,7 +12,16 @@ def launch_script():
     global running_process
     script_path = "C:/Users/Administrator/Desktop/HELIOS_Spectroscopy/launch.py"
     running_process = subprocess.Popen(["python", script_path], 
-                                     shell=True)
+                                       shell=True)
+   #  # Get user input from Entry widget
+   #  user_input = entry.get()
+    
+   #  # Check if the input is not empty or whitespace
+   #  if user_input.strip():
+   #      # Launch script with user input as an argument
+   #      running_process = subprocess.Popen(["python", script_path, user_input], shell=True)
+   #  else:
+   #      print("Input is empty. Please provide a valid input.")
     # running_process.terminate()
 
 def stop_script():
@@ -49,7 +58,7 @@ def stop_program():
     window.quit()
 
 # Set the window size
-window_width = 1500
+window_width = 1200
 window_height = 470
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
@@ -95,6 +104,11 @@ stop_button.pack(padx=10, pady=20, side=tk.RIGHT)
 # stop_button.place(relx=0.7, rely=0.7, anchor=tk.E)
 # stop_button.grid(row=1, column=1, padx=10)
 
+# Create an Entry widget for user input
+entry_label = Label(window, text="Enter intergration time [micro seconds]: ")
+entry_label.pack(pady=5)
+entry = tk.Entry(window)
+entry.pack(pady=5)
 
 description_label = tk.Label(window, 
                              text="Click the buttons bellow to launch or stop the spectrometer:",
