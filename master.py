@@ -2,13 +2,17 @@ from plot_data import plot_data
 from save_data import save_spectrum_data
 import seabreeze
 seabreeze.use('cseabreeze')
+#seabreeze.use('pyseabreeze')
 from seabreeze.spectrometers import list_devices, Spectrometer
 import matplotlib.pyplot as plt
 
-from seabreeze.spectrometers import Spectrometer
+#from seabreeze.spectrometers import Spectrometer
 
 
 from datetime import datetime
+
+
+
 
 def get_spectrometer():
     spec = Spectrometer.from_first_available()
@@ -95,6 +99,7 @@ def acquire_live_data_inf_loop(int_time=2000, show=False, save=False, path='Spec
 
 
 if __name__ == '__main__':
+
     spec = Spectrometer.from_first_available()
     # import seabreeze.spectrometers as sb
     # from seabreeze.spectrometers import Spectrometer
