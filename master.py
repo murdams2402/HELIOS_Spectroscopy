@@ -1,8 +1,8 @@
 from plot_data import plot_data
 from save_data import save_spectrum_data
 import seabreeze
-# seabreeze.use('cseabreeze')
-seabreeze.use('pyseabreeze')
+seabreeze.use('cseabreeze')
+# seabreeze.use('pyseabreeze')
 from seabreeze.spectrometers import list_devices, Spectrometer
 import matplotlib.pyplot as plt
 

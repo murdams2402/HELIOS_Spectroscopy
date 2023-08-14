@@ -11,7 +11,7 @@ api = psb.SeaBreezeAPI()
 print(api.supported_models())
 print('---------------')
 
-seabreeze.use('pyseabreeze')
+seabreeze.use('cseabreeze')
 from seabreeze.spectrometers import list_devices, Spectrometer
 print(list_devices())
 print('---------------')
