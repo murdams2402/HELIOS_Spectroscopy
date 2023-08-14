@@ -4,15 +4,33 @@ from tkinter import *
 import subprocess
 import os
 import signal
+import sys
 
 # Global variable to store the subprocess object
 running_process = None
 
 def launch_script():
     global running_process
-    script_path = "C:/Users/Administrator/Desktop/HELIOS_Spectroscopy/launch.py"
-    running_process = subprocess.Popen(["python", script_path], 
-                                       shell=True)
+    # script_path = "C:/Users/Administrator/Desktop/HELIOS_Spectroscopy/launch.py"
+    script_path = "launch.py"
+    # user_input = entry.get()
+
+    running_process = subprocess.Popen(["python ", script_path], 
+                                              shell=True)
+
+   #  if user_input.strip():
+   #       # Launch script with user input as an argument
+   #       running_process = subprocess.Popen(["python ", script_path], 
+   #                                            shell=True)
+   #       # running_process = subprocess.Popen(["python", script_path, user_input], 
+   #       #                                    capture_output=True, 
+   #       #                                    check=False)
+   #  else:
+   #      print("Input is empty. Please provide a valid input.")
+   #      pass
+
+   #  running_process = subprocess.Popen(["python", script_path], 
+   #                                     shell=True)
     # Get user input from Entry widget
     """ user_input = entry.get()
     
