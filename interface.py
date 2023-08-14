@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import *
-
 import subprocess
 import os
 import signal
@@ -12,10 +11,10 @@ running_process = None
 def launch_script():
     global running_process
     # script_path = "C:/Users/Administrator/Desktop/HELIOS_Spectroscopy/launch.py"
-    script_path = "launch.py"
+    script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
     # user_input = entry.get()
 
-    running_process = subprocess.Popen(["python ", script_path], 
+    running_process = subprocess.Popen(["python", script_path], 
                                               shell=True)
 
    #  if user_input.strip():

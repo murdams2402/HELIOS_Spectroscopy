@@ -14,14 +14,14 @@ def get_spectrometer():
     spec = Spectrometer.from_first_available()
     return spec
 
-def get_snapshot_raw(int_time=20000):
+def get_snapshot_raw(int_time=2000):
     spec = get_spectrometer()
     spec.integration_time_micros(int_time)
     wavelengths, intensities = spec.spectrum()
     spec.close()
     return wavelengths, intensities
 
-def get_snapshot(int_time=20000, path='Spectrum_data/', name=''):
+def get_snapshot(int_time=2000, path='Spectrum_data/', name=''):
     # Opening the spectrometer
     spec = get_spectrometer()
     spec.integration_time_micros(int_time)
@@ -36,7 +36,7 @@ def get_snapshot(int_time=20000, path='Spectrum_data/', name=''):
     return save_spectrum_data(name, intensities, wavelengths, save_path=path)
 
 
-def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_data/'):
+def acquire_live_data(int_time=2000, show=False, save=False, path='Spectrum_data/'):
     spec = get_spectrometer()
     spec.integration_time_micros(int_time)
     
@@ -66,7 +66,7 @@ def acquire_live_data(int_time=20000, show=False, save=False, path='Spectrum_dat
         spec.close()
         pass
 
-def acquire_live_data_inf_loop(int_time=20000, show=False, save=False, path='Spectrum_data/'):
+def acquire_live_data_inf_loop(int_time=2000, show=False, save=False, path='Spectrum_data/'):
     spec = get_spectrometer()
     spec.integration_time_micros(int_time)
     
