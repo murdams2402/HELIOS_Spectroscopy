@@ -52,9 +52,14 @@ def launch_script():
 
 def stop_script():
    global running_process
-   if running_process:
+   if running_process is not None:
         if os.name == "nt": # Checking is running on Windows
             running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+            running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+            running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+            running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+            running_process.send_signal(signal.CTRL_C_EVENT) # sends Ctrl+C
+            
         else :
             running_process.terminate()
         running_process = None
