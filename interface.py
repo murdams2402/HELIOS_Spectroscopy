@@ -13,42 +13,19 @@ def launch_script():
     ### Use this line if running on Windows
     script_path = rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\launch.py"
 
-    ### Use this line if running on MacOS
-    # script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
-    
-    # user_input = entry.get()
-
-    # running_process = subprocess.Popen(["/usr/local/bin/python3 " + script_path], 
-    #                                          shell=True)
-    
-    ### Use this line if running on Windows ?
+    ### Use this line if running on Windows
     running_process = subprocess.Popen(["python", script_path], 
                                              shell=True)
 
-   #  if user_input.strip():
-   #       # Launch script with user input as an argument
-   #       running_process = subprocess.Popen(["python ", script_path], 
-   #                                            shell=True)
-   #       # running_process = subprocess.Popen(["python", script_path, user_input], 
-   #       #                                    capture_output=True, 
-   #       #                                    check=False)
-   #  else:
-   #      print("Input is empty. Please provide a valid input.")
-   #      pass
-
-   #  running_process = subprocess.Popen(["python", script_path], 
-   #                                     shell=True)
-    # Get user input from Entry widget
-    """ user_input = entry.get()
+    ### Use this line if running on MacOS
+    # script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
     
-  # Check if the input is not empty or whitespace
-    if user_input.strip():
-         # Launch script with user input as an argument
-         running_process = subprocess.Popen(["python", script_path, user_input], shell=True)
-    else:
-        # print("Input is empty. Please provide a valid input.")
-        pass """
-    # running_process.terminate()
+
+    ### Use this line if running on MacOS
+    # running_process = subprocess.Popen(["/usr/local/bin/python3 " + script_path], 
+    #                                          shell=True)
+    
+
 
 def stop_script():
    global running_process
@@ -149,11 +126,11 @@ image_label = tk.Label(window, image=resized_image)
 image_label.pack()
 # image_label.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
-# Create an Entry widget for user input
-entry_label = Label(window, text="Enter intergration time [micro seconds]: ")
-entry_label.pack()
-entry = tk.Entry(window)
-entry.pack()
+# # Create an Entry widget for user input
+# entry_label = Label(window, text="Enter intergration time [micro seconds]: ")
+# entry_label.pack()
+# entry = tk.Entry(window)
+# entry.pack()
 
 # def frame(root, side):
 #    w = Frame(root)

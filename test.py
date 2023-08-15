@@ -5,6 +5,8 @@ api = csb.SeaBreezeAPI()
 api.supported_models()
 print(api.supported_models())
 print('---------------')
+print(api.list_devices())
+print('---------------')
 
 import seabreeze.pyseabreeze as psb
 api = psb.SeaBreezeAPI()
