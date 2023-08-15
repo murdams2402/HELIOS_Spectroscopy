@@ -68,7 +68,7 @@ def acquire_live_data(int_time=2000, show=False, save=False, path='Spectrum_data
     except KeyboardInterrupt:
         # Closing connection with spectrometer
         spec.close()
-        pass
+        raise Exception("Closing")
 
 def acquire_live_data_inf_loop(int_time=2000, show=False, save=False, path='Spectrum_data/'):
     spec = get_spectrometer()
