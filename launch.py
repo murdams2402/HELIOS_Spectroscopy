@@ -10,5 +10,5 @@ optons, args = getopt.getopt(argv, "") """
 # acquire(show=True, verbose=True, integration_time=4500)
 # int_time = int(input())
 # print(sys.argv)
-acquire_live_data(show=True, save=False)
+acquire_live_data(show=True, save=False, int_time=20000)
 # acquire_live_data_inf_loop(show=True, save=False)
