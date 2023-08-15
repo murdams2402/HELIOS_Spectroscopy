@@ -4,7 +4,6 @@ This code is destined to the automatation of the HELIOS experiment of the Swiss 
 
 In order to run the simplified user interface, simply run the 'interface.py' python scritp from your terminal:
 '''
-python interface.py
-# or the following 
+python interface.py #or the following 
 python3 interface.py
 '''
