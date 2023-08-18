@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from utils import get_files_and_params
@@ -46,14 +47,14 @@ if __name__ == '__main__':
     plt.grid(True)
     # plt.show()
 
-
-    plt.figure()
-    for file in files:
-        shot = file["shot"]
-        plt.scatter(peaks[peaks["shot"]==shot]["wavelength"],peaks[peaks["shot"] == shot]["intensity"])
-    plt.xlabel(r"$\lambda \rm \ [nm]$")
-    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-    plt.grid(True)
+    for gas in peaks["gas"].drop_duplicates() :
+        plt.figure()
+        for file in files:
+            shot = file["shot"]
+            plt.scatter(peaks[peaks["shot"]==shot]["wavelength"],peaks[peaks["shot"] == shot]["intensity"])
+        plt.xlabel(r"$\lambda \rm \ [nm]$")
+        plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+        plt.grid(True)
     
     # plt.show() 
 
@@ -62,21 +63,36 @@ if __name__ == '__main__':
     peak_wavelengths = peaks["wavelength"].drop_duplicates() 
     # print(peak_wavelengths)
     sorted = peaks.sort_values("power")
-    print(sorted["power"].drop_duplicates())
+    # print(sorted["power"].drop_duplicates())
 
-    plt.figure()
-    for l in peak_wavelengths:
-        plt.scatter(sorted[sorted["wavelength"] == l]["power"], sorted[sorted["wavelength"] == l]["intensity"])
-    plt.xlabel(r"$ \rm Power \ [W]$")
-    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-    plt.grid(True)
-    # plt.show() 
+    for gas in peaks["gas"].drop_duplicates() :
+        plt.figure()
+        for l in peak_wavelengths:
+            plt.scatter(sorted[sorted["wavelength"] == l]["power"], sorted[sorted["wavelength"] == l]["intensity"])
+        plt.xlabel(r"$ \rm Power \ [W]$")
+        plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+        plt.grid(True)
+        # plt.show() 
 
-    plt.figure()
-    for l in peak_wavelengths:
-        plt.scatter(sorted[sorted["wavelength"] == l]["power"], sorted[sorted["wavelength"] == l]["normalized intensity"])
-    plt.xlabel(r"$ \rm Power \ [W]$")
-    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-    plt.grid(True)
+        if gas == "Ar":
+            lambda_min = 736 # [nm]
+            lambda_max = 856 # [nm]
+        elif gas == "Ne":
+            lambda_min = 0
+            lamnda_max = 0
+
+        plt.figure()
+        plots = np.array([])
+        labels = np.array([])
+        for l in peak_wavelengths:
+            if l >= lambda_min and  l <= lambda_max :
+                plots = np.append(plots, plt.plot(sorted[sorted["wavelength"] == l]["power"], sorted[sorted["wavelength"] == l]["normalized intensity"]))
+                labels = np.append(labels, [f"{int(l)} nm"]) 
+        plt.xlabel(r"$ \rm Power \ [W]$")
+        plt.ylabel(r"$\rm Relative Intensity \ [a.u.]$")
+        plt.grid(True)
+        print(labels)
+        plt.legend(plots, labels)
+        
     
     plt.show() 

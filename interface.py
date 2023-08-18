@@ -10,20 +10,15 @@ running_process = None
 
 def launch_script():
     global running_process
-    ### Use this line if running on Windows
-    script_path = rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\launch.py"
+    ### Use these lines if running on Windows
+    # script_path = rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\launch.py"
+    # running_process = subprocess.Popen(["python", script_path], 
+    #                                         shell=True)
 
-    ### Use this line if running on Windows
-    running_process = subprocess.Popen(["python", script_path], 
-                                             shell=True)
-
-    ### Use this line if running on MacOS
-    # script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
-    
-
-    ### Use this line if running on MacOS
-    # running_process = subprocess.Popen(["/usr/local/bin/python3 " + script_path], 
-    #                                          shell=True)
+    ### Use these lines if running on MacOS
+    script_path = "/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/launch.py"
+    running_process = subprocess.Popen(["/usr/local/bin/python3 " + script_path], 
+                                              shell=True)
     
 
 
@@ -122,8 +117,8 @@ description_label.pack(pady=20)
 
 
 # Load the image
-# image = PhotoImage(file="/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/Images/background.PNG")
-image = PhotoImage(file=rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\Images\background.PNG")  
+image = PhotoImage(file="/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/Images/background.PNG")
+# image = PhotoImage(file=rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\Images\background.PNG")  
 # Resize the image using subsample
 resized_image = image.subsample(4, 4)
 # Create a label to display the image

@@ -1,8 +1,8 @@
 from plot_data import plot_data
 from save_data import save_spectrum_data
 import seabreeze
-# seabreeze.use('cseabreeze')
-seabreeze.use('pyseabreeze')
+seabreeze.use('cseabreeze')
+# seabreeze.use('pyseabreeze')
 from seabreeze.spectrometers import list_devices, Spectrometer
 import matplotlib.pyplot as plt
 
@@ -46,18 +46,26 @@ def acquire_live_data(int_time=2000, show=False, save=False, path='Spectrum_data
     
     if show:
         plt.ion()
-        plt.figure(figsize=(9,7))
-
+        # plt.figure(figsize=(9,7))
+        fig, ax = plt.subplots(figsize=(10,7.5))
+        # plt.rcParams["figure.figsize"] = [9.00, 6.50]
+        # im = plt.imread("/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/Images/visible-light-spectrum.jpg")
+        # newax = fig.add_axes([0.09, 0.65, 0.4, 0.4], anchor='NW')
+        # newax.imshow(im)
+        # newax.axis('off')
     try :
         while True:
             wavelengths, intensities = spec.spectrum()
+            filter = wavelengths > 200 # nm
+            filtered_wavelengths = wavelengths[filter]
+            filtered_intensities = intensities[filter]
             if show:
-                plt.plot(wavelengths,intensities, color='b')
+                ax.plot(filtered_wavelengths, filtered_intensities, color='b')
                 plt.xlabel(r"$\lambda \rm \ [nm]$")
                 plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-                plt.grid(True)
-                plt.pause(1.5)
-                plt.cla()
+                ax.grid(True)
+                plt.pause(0.6)
+                ax.cla()
             
             if save:
                 dt_string = now.strftime("%d_%m_%Y_%Hh%Mmin%Ss")     
@@ -69,6 +77,9 @@ def acquire_live_data(int_time=2000, show=False, save=False, path='Spectrum_data
         # Closing connection with spectrometer
         spec.close()
         raise Exception("Closing")
+
+
+
 
 def acquire_live_data_inf_loop(int_time=2000, show=False, save=False, path='Spectrum_data/'):
     spec = get_spectrometer()
