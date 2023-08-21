@@ -76,7 +76,7 @@ def acquire_live_data(int_time=2000, show=False, save=False, path='Spectrum_data
     except KeyboardInterrupt:
         # Closing connection with spectrometer
         spec.close()
-        raise Exception("Closing")
+        # raise KeyboardInterrupt
 
 
 
@@ -148,3 +148,6 @@ if __name__ == '__main__':
             # plt.savefig(name + "_spectrum" + '.eps')
         pass
         _ =  save_spectrum_data(name, intensities, wavelengths, save_path='Spectrum_data/')
+        
+        
+        #raise KeyboardInterrupt

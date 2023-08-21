@@ -19,11 +19,12 @@ print('////////////////////////////////' )
 
 while True:
     shot = int(input("Enter shot number of measurment = "))
-    hight = int(input("Enter hight [mm] = "))
+    height = int(input("Enter height [mm] = "))
     
     # fullname = get_snapshot(path='Spectrum_data/Intensity_experiment/',name=f"shot={shot}_depth={depth}_")
-    fullname = get_snapshot(path='Spectrum_data/Intensity_experiment/',
-                            name=f"shot={shot}_gas={gas}_hight={hight}_RF={RF_power}W_massflow={mass}_coils={coils}A_")
+    fullname = get_snapshot(path='Spectrum_data/Intensity_experiment_2/',
+                            name=f"shot={shot}_gas={gas}_height={height}_RF={RF_power}W_massflow={mass}_coils={coils}A_",
+                            int_time=4000)
 
     # # Importing data 
     # brut = pd.read_table(fullname, 
