@@ -24,28 +24,32 @@ for  file in files:
         data = pd.concat([data, temp])
 
 
-plt.figure()
-for file in files:
-    shot = int(file["shot"])
-    plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
-plt.xlabel(r"$\lambda \rm \ [nm]$")
-plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-plt.grid(True)
+# plt.figure()
+# for file in files:
+#     shot = int(file["shot"])
+#     plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
+# plt.xlabel(r"$\lambda \rm \ [nm]$")
+# plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+# plt.grid(True)
 
 
-currents = [0.0, 49.9, 80.1, 100.0]
+currents = [0.0, 50, 80.1, 100.0]
+gases = ['Ne', 'Ar']
 
-for I in currents:
-    plt.figure()
-    plt.title(rf"$ I = {I} \rm A$")
-    for file in files:
-        coils = float(file["coils"])
-        if coils == I: 
-            shot = int(file["shot"])
-            plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
-    plt.xlabel(r"$\lambda \rm \ [nm]$")
-    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
-    plt.grid(True)
+for gas in gases:
+    temp = data[data["gas"]==gas]
+    for I in currents:
+        plt.figure()
+        plt.title(rf"{gas}: $ I = {I}\pm 0.4 \rm\ A$")
+        for file in files:
+            coils = float(file["coils"])
+            if abs(coils - I) < 0.5 : 
+                shot = int(file["shot"])
+                plt.plot(temp[temp["shot"]==shot]["wavelength"],
+                         temp[temp["shot"] == shot]["intensity"])
+        plt.xlabel(r"$\lambda \rm \ [nm]$")
+        plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+        plt.grid(True)
 
 
 plt.show()
