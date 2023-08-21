@@ -27,8 +27,25 @@ for  file in files:
 plt.figure()
 for file in files:
     shot = int(file["shot"])
-    if shot < 149: plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
+    plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
 plt.xlabel(r"$\lambda \rm \ [nm]$")
 plt.ylabel(r"$\rm Intensity \ [a.u.]$")
 plt.grid(True)
+
+
+currents = [0.0, 49.9, 80.1, 100.0]
+
+for I in currents:
+    plt.figure()
+    plt.title(rf"$ I = {I} \rm A$")
+    for file in files:
+        coils = float(file["coils"])
+        if coils == I: 
+            shot = int(file["shot"])
+            plt.plot(data[data["shot"]==shot]["wavelength"],data[data["shot"] == shot]["intensity"])
+    plt.xlabel(r"$\lambda \rm \ [nm]$")
+    plt.ylabel(r"$\rm Intensity \ [a.u.]$")
+    plt.grid(True)
+
+
 plt.show()

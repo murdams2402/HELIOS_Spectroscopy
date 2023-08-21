@@ -30,9 +30,10 @@ def get_files_and_params(dir, format):
     files_and_params = []
     for file in files:
         # get params from file name
-        params = parse(format, file).named
-        files_and_params.append({
-            "name": file,
-            **params
-        })
+        if file != '.DS_Store':
+            params = parse(format, file).named
+            files_and_params.append({
+                "name": file,
+                **params
+            })
     return files_and_params
