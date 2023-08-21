@@ -11,19 +11,26 @@ from scipy.signal import find_peaks
 
 # data = pd.DataFrame(columns=["shot", "file_name" "depth", "wavelength", "intensity"])
 gas = input("Enter gas [Ne or Ar] = ")
-RF_power = float(input("Enter RF power [W] = "))
+# RF_power = float(input("Enter RF power [W] = "))
 mass = int(input("Enter massflow [u.a.] = "))
-coils = float(input("Enter coil current [A] = "))
+# coils = float(input("Enter coil current [A] = "))
+height = int(input("Enter height [mm] = "))
 
 print('////////////////////////////////' )
 
 while True:
     shot = int(input("Enter shot number of measurment = "))
-    height = int(input("Enter height [mm] = "))
+    RF_power = float(input("Enter RF power [W] = "))
+    coils = float(input("Enter coil current [A] = "))
+    # height = int(input("Enter height [mm] = "))
     
     # fullname = get_snapshot(path='Spectrum_data/Intensity_experiment/',name=f"shot={shot}_depth={depth}_")
-    fullname = get_snapshot(path='Spectrum_data/Intensity_experiment_2/',
-                            name=f"shot={shot}_gas={gas}_height={height}_RF={RF_power}W_massflow={mass}_coils={coils}A_",
+    # fullname = get_snapshot(path='Spectrum_data/Intensity_experiment_2/',
+    #                         name=f"shot={shot}_gas={gas}_height={height}_RF={RF_power}W_massflow={mass}_coils={coils}A_",
+    #                         int_time=4000)
+    position = int(input("Enter position number [1, 2, 3, ... to 8] = "))
+    fullname = get_snapshot(path='Spectrum_data/Intensity_experiment_3/',
+                            name=f"shot={shot}_position={position}_gas={gas}_height={height}_RF={RF_power}W_massflow={mass}_coils={coils}A_",
                             int_time=4000)
 
     # # Importing data 
