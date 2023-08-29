@@ -14,7 +14,10 @@ python interface.py
 # or the following 
 python3 interface.py
 ``` 
-Make sure your spectrometer is connected to your computer before launching the spectrometer.
+ Once the code is launched, a long window should appear, such as the one below: 
+
 ![Image of the user interface](/Images/interface.png)
+
+In order to visualise the spectrum, click once on the `Launch spectrometer` button. If nothing happens, make sure that your spectrometer is connected properly to your computer.
 
 ## Spectral analysis codes
