@@ -15,5 +15,6 @@ python interface.py
 python3 interface.py
 ``` 
 Make sure your spectrometer is connected to your computer before launching the spectrometer.
+![Image of the user interface](/Images/interface.png)
 
 ## Spectral analysis codes
