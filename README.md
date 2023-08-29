@@ -2,7 +2,12 @@
 ## Introduction and easy launching
 This code is destined to the automatation of the OcenView (OceanOptics) spectrometer added to the HELIOS experiment of the Swiss Plasma Center (SPC). Using the open-source SEABREEZE python library, this 100% python code allows an easy visualisation of HELIOS' cold plasma spectra via a kinimal user-friendly interface. 
 
-In order to run the simplified user interface, simply run the `interface.py` python scritp from your terminal. Note that it is necessary to install python (3.10 or 3.11) beforehand. Once python is downloaded on your computer, open a terminal and run the following script:
+In order to run the simplified user interface, simply run the `interface.py` python scritp from your terminal. 
+
+> [!IMPORTANT]
+>Note that it is necessary to install python (3.10 or 3.11) beforehand. 
+
+Once python is downloaded on your computer, open a terminal and run the following script:
 
 ```
 git clone https://github.com/murdams2402/HELIOS_Spectroscopy.git
@@ -18,6 +23,6 @@ python3 interface.py
 
 ![Image of the user interface](/Images/interface.png)
 
-In order to visualise the spectrum, click once on the `Launch spectrometer` button. If nothing happens, make sure that your spectrometer is connected properly to your computer.
+In order to visualise the spectrum, click once on the `Launch Spectrometer` button. If nothing happens, make sure that your spectrometer is connected properly to your computer.
 
 ## Spectral analysis codes
