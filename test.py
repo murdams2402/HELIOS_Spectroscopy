@@ -1,6 +1,8 @@
 import seabreeze
 import seabreeze.cseabreeze as csb
 
+## This script is ment to test whether your seabreeze library works proprely
+
 api = csb.SeaBreezeAPI()
 api.supported_models()
 print(api.supported_models())

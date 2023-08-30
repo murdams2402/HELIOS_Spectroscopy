@@ -1,8 +1,11 @@
 from plot_data import plot_data
 from save_data import save_spectrum_data
 import seabreeze
+
 seabreeze.use('cseabreeze')
+### If the code bugs, maybe change the line above to the line below (cseabreeze to pyseabreeze)
 # seabreeze.use('pyseabreeze')
+
 from seabreeze.spectrometers import list_devices, Spectrometer
 import matplotlib.pyplot as plt
 
@@ -11,6 +14,10 @@ import matplotlib.pyplot as plt
 
 from datetime import datetime
 
+
+### This code manages the communiocation between the computer and the spectrometer. Make sure you've
+###     downloaded pyusb, libsub and the seabreeze python libraries in order to allow the 
+###     communication to be allowed.
 
 
 

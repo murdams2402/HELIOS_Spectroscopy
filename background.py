@@ -12,7 +12,13 @@ from datetime import datetime
 
 from time import time
 
+## This code is made in order to acquire the background noise, I suggest to take a snapshot of the
+##      background noise before any spectrum acquiring. This will allow a more faithfull subtraction
+##      of the ambient light rather than always using the same data 
 
+# Change the integration time depending on the spectrometer that you use
+# if USB2000+ --> integration_time_micros = 2000
+# if HR4000  --> integration_time_micros = 4000
 spec.integration_time_micros(20000)
 
 plt.ion()

@@ -1,6 +1,7 @@
 import plot_config 
 import matplotlib.pyplot as plt
 
+### Neglect this function it isn't in any way handy, but maybe it can be used ... idk 
 
 def plot_data(x, y, x_label, y_label, title="", show=True):
     plt.figure

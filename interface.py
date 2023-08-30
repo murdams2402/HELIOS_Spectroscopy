@@ -5,6 +5,10 @@ import os
 import signal
 import sys
 
+### This code manages the python interface. Follow the instructions commented below
+###     such that the interface works on the computer you are running it on.
+
+
 # Global variable to store the subprocess object
 running_process = None
 
@@ -41,6 +45,7 @@ window = Tk()
 # Disable automatic resizing of the window by widgets
 window.pack_propagate(False)
 
+## Neglect this part
 # ##########################
 # # Adding an image in the background
 
@@ -70,17 +75,14 @@ y_position = (screen_height - window_height) // 2
 
 window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
-
+# Setting the title 
 title = tk.Label(text="Helios Spectrometer", 
                 background="#FFA500", 
                 font=("Helvetica", 40),
                 fg="black")
 title.pack(fill=tk.BOTH)
-# title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-# title.grid(row=0, column=0, columnspan=10, padx=30, pady=30)
 
-
-# root = tk.Tk()
+# Defining the launch button
 launch_button = tk.Button(window, 
                           text="Launch Spectrometer", 
                           font=("Helvetica", 20),
@@ -91,10 +93,9 @@ launch_button = tk.Button(window,
                           fg="black",
                           relief=tk.RAISED)
 launch_button.pack(padx=10, pady=20, side=tk.LEFT)
-# launch_button.place(relx=0.7, rely=0.7, anchor=tk.W)
-# launch_button.grid(row=1, column=0, padx=10)
 
 
+# Defining the stop button
 stop_button=  tk.Button(window, 
                           text="Stop Spectrometer", 
                           font=("Helvetica", 20),
@@ -105,20 +106,20 @@ stop_button=  tk.Button(window,
                           fg="black",
                           relief=tk.RAISED)
 stop_button.pack(padx=10, pady=20, side=tk.RIGHT)
-# stop_button.place(relx=0.7, rely=0.7, anchor=tk.E)
-# stop_button.grid(row=1, column=1, padx=10)
+
 
 description_label = tk.Label(window, 
                              text="Click the buttons bellow to launch or stop the spectrometer:",
                              font=("Helvetica", 20))
 description_label.pack(pady=20)
-# description_label.place(relx=0.7, rely=0.7, anchor=tk.CENTER)
-# description_label.grid(row=2, column=0, columnspan=2, padx=20, pady=20)
 
 
-# Load the image
+
+# Loading an image of HELIOS for the interface (the placement is automatic)
 image = PhotoImage(file="/Users/Mur/Desktop/EPFL/SummerInTheLab/Spectrometer/OceanOptics_Interface/HELIOS_Spectroscopy/Images/background.PNG")
+### Use this line if using Windows
 # image = PhotoImage(file=rf"C:\Users\Administrator\Desktop\HELIOS_Spectroscopy\Images\background.PNG")  
+
 # Resize the image using subsample
 resized_image = image.subsample(4, 4)
 # Create a label to display the image
@@ -126,19 +127,5 @@ image_label = tk.Label(window, image=resized_image)
 image_label.pack()
 # image_label.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
-# # Create an Entry widget for user input
-# entry_label = Label(window, text="Enter intergration time [micro seconds]: ")
-# entry_label.pack()
-# entry = tk.Entry(window)
-# entry.pack()
-
-# def frame(root, side):
-#    w = Frame(root)
-#    w.pack(side=side, expand=YES, fill=BOTH)
-#    return w
-# def button(root, side, text, command=None):
-#    w = Button(root, text=text, command=command)
-#    w.pack(side=side, expand=YES, fill=BOTH)
-#    return w
 
 window.mainloop()

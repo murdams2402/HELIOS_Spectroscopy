@@ -3,13 +3,13 @@ import pandas as pd
 
 from scipy.signal import find_peaks
 
-#print("Acquiring background noise, please turn the plasma off ... \n ")
-#W, I = get_snapshot_raw()
-#background = pd.DataFrame([(w, i) for w, i in zip(W, I)],
-#                          columns=["wavelength", "intensiy"])
-#print("Done!\n")
 
-# data = pd.DataFrame(columns=["shot", "file_name" "depth", "wavelength", "intensity"])
+### This code was used to take measurments for different powers, current and position (openings)
+### for fixed gas, massflow and height of the spectrometer. Change as you'd like the order in which 
+### ask the parameters
+
+
+
 gas = input("Enter gas [Ne or Ar] = ")
 # RF_power = float(input("Enter RF power [W] = "))
 mass = int(input("Enter massflow [u.a.] = "))

@@ -13,7 +13,7 @@ from plot_data import plot_data
 import plot_config
 
 from datetime import datetime
-from simple_spectrometer import get_background_noise, get_snapshot
+# from simple_spectrometer import get_background_noise, get_snapshot
 
 integration_time = 2000
 path = 'Spectrum_data/'

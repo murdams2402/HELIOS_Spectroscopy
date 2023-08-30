@@ -3,6 +3,9 @@ from math import pi
 from parse import *
 import os
 
+### This script is gathers all the usefull functions for data analysis or curve fitting
+###     Feel free to add all other important functions you need here 
+
 def gaussian(x, a, b, c):
     return a*exp(-(x-b)*(x-b)*c)
 

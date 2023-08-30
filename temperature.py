@@ -10,6 +10,10 @@ from scipy.optimize import curve_fit
 
 from scipy.signal import peak_widths, find_peaks
 
+### This code was a first atempt to determine the gas's temperature via Doppler-broadening measurments
+###     If you are about to do the same, make sure your spectrometer resolution is good enough, if not
+###     you will have nonesensical measurments! 
+
 # Opening background noise
 background = pd.read_table("Background_data/HR4000_03_08_2023_13h58min08s_spectrum_raw_data.txt",
                             sep=" ", 

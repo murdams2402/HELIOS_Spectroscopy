@@ -5,6 +5,13 @@ from utils import get_files_and_params
 from scipy.signal import find_peaks
 import plot_config
 
+
+### This code visualizes the data acquired by intensities.py for all the files 
+### stored in Spectrum_data/Intensity_experiment_2 
+### Run the code and see the graphs. You can also copy paste any part of the code for your own visualization
+
+
+
 filtered_data = pd.DataFrame(columns=["model", "shot", "gas", "height", "RF power", "massflow", "coil current", "wavelength", "intensity"])
 peaks = pd.DataFrame(columns=["model", "shot", "gas", "height", "RF power", "massflow", "coil current", "wavelength", "intensity", "normalized intensity"])
 
