@@ -5,7 +5,7 @@ This code is destined to the automatation of the OcenView (OceanOptics) spectrom
 In order to run the simplified user interface, simply run the `interface.py` python scritp from your terminal. 
 
 > [!IMPORTANT]
->Note that it is necessary to install [python](https://www.python.org/downloads/) (3.10 or 3.11) beforehand as well as the [SEABREEZE](https://github.com/ap--/python-seabreeze#changes) python library. 
+>Note that it is necessary to install [python](https://www.python.org/downloads/) (3.10 or 3.11) beforehand as well as the [SEABREEZE](https://github.com/ap--/python-seabreeze#changes) python library, as well as [pyusb](https://pypi.org/project/pyusb/) and [libusb](https://pypi.org/project/libusb/). 
 
 Once python is downloaded on your computer, open a terminal and run the following script:
 
