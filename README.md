@@ -1,13 +1,13 @@
 # HELIOS_Spectroscopy
 ## Introduction and easy launching
-This code is destined to the automatation of the OceanInsight (OceanOptics) spectrometer added to the HELIOS experiment of the Swiss Plasma Center (SPC). Using the open-source SEABREEZE python library, this 100% python code allows an easy visualisation of HELIOS' cold plasma spectra via a kinimal user-friendly interface. 
+This code is destined to the automatation of the OceanInsight (OceanOptics) spectrometer added to the HELIOS experiment of the Swiss Plasma Center (SPC). Using the open-source SEABREEZE python library, this 100% python code allows an easy visualisation of HELIOS' cold plasma spectra via a minimalistic user-friendly interface. 
 
 In order to run the simplified user interface, simply run the `interface.py` python scritp from your terminal. 
 
 > [!IMPORTANT]
 > Note that it is necessary to install [python](https://www.python.org/downloads/) (3.10 or 3.11) beforehand as well as the [SEABREEZE](https://github.com/ap--/python-seabreeze#changes) python library, as well as [pyusb](https://pypi.org/project/pyusb/) and [libusb](https://pypi.org/project/libusb/). 
 
-Once python is downloaded on your computer, open a terminal and run the following script:
+Once python is downloaded on your computer, open a terminal and enter the following line on your terminal:
 
 ```
 git clone https://github.com/murdams2402/HELIOS_Spectroscopy.git
