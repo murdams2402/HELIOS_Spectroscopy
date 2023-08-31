@@ -45,4 +45,6 @@ and the ones used to analyse the data are the following
 
 ## Data and figures
 
-In this repository, in addition to the interface and analysis python scripts, you will also find examples of raw spectrum data in the `Spectrum_data` & `Background_data` files and some figures in the `Spectrum_figures` that allow a visualisation of the spectrums, line-ratio plots or background noise.
+In this repository, in addition to the interface and analysis python scripts, you will also find examples of raw spectrum data in the `Spectrum_data` & `Background_data` files and some figures in the `Spectrum_figures` that allow a visualisation of the spectrums, line-ratio plots or background noise. The following image corresponds to such a figure, for a given power and magnetic field configuration of an argon plasma made by HELIOS. 
+
+![Spectrum example](/Spectrum_figures/Ar_spectrum_I=0A_height=70_P=200W.png)
